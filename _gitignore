@@ -1,0 +1,7 @@
+obj*/
+ProjectSettings*/
+Library*/
+Temp*/
+*.apk
+*.sln
+*.csproj

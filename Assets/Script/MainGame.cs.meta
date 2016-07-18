@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: f6394a0b212279a439b962c4a8c953cb
+timeCreated: 1468503779
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - cube: {instanceID: 0}
+  - ball: {instanceID: 0}
+  - wall: {instanceID: 0}
+  - bar: {instanceID: 0}
+  - customSkin: {fileID: 11400000, guid: 1c115b8d6eb5b5a44a09beca40a25352, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
