@@ -73,12 +73,12 @@ public class MainGame : MonoBehaviour {
 
 
 	void SetBall() {	// First ball
+
 		vAssemblePoint = new Vector2(0, -3.8F); // Set position
 		goFirstBall = (GameObject)Instantiate(ball, vAssemblePoint, Quaternion.identity);
 		bFirstBall = goFirstBall.GetComponent<Ball>();
 		bFirstBall.SetBallID(0);
-		bBallList.Add(bFirstBall);
-		iHoldBalls++;
+		goFirstBall.GetComponent<Renderer>().enabled = false;
 	}
 
 
@@ -120,10 +120,8 @@ public class MainGame : MonoBehaviour {
 		GUI.skin = customSkin;
 		GUI.Label(new Rect(Screen.width/2, 20, 200, 60 ), "Scores:" + iScore.ToString() );
 		GUI.Label(new Rect(20, 20, 250, 60 ), "Rounds:" + iRounds.ToString() );
-		//GUI.Label(new Rect(vAssemblePoint.x+5, vAssemblePoint.y, 250, 60 ), "X" + iRounds.ToString() );
 		GUI.Label(new Rect(20, Screen.height-80, 400, 100 ), "AP:" + vAssemblePoint.ToString() );
 		GUI.Label(new Rect(Screen.width/2, Screen.height-60, 400, 100 ), "X " + iHoldBalls.ToString() );
-		GUI.Label(new Rect(Screen.width/2+100, Screen.height-60, 400, 100  ), "As:" + IsAssemble() );
 	}
 
 

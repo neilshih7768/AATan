@@ -1,14 +1,15 @@
 fileFormatVersion: 2
 guid: f6394a0b212279a439b962c4a8c953cb
-timeCreated: 1468503779
+timeCreated: 1468916404
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
   defaultReferences:
-  - cube: {instanceID: 0}
-  - ball: {instanceID: 0}
-  - wall: {instanceID: 0}
-  - bar: {instanceID: 0}
+  - cube: {fileID: 153000, guid: b32c35bda8f44cf419153e0b1d358147, type: 2}
+  - ball: {fileID: 129994, guid: 9f6a7f97a04aecb43ba4fe4ff5b94c6e, type: 2}
+  - wall: {fileID: 170980, guid: 8a2ffc5f208437846be1ab6e5d480bea, type: 2}
+  - bar: {fileID: 110270, guid: 8e4390b4d444d144894896f13333dfb4, type: 2}
+  - emptyGameObject: {fileID: 182236, guid: a1220f5e2bd695846b7b4016a589217e, type: 2}
   - customSkin: {fileID: 11400000, guid: 1c115b8d6eb5b5a44a09beca40a25352, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}

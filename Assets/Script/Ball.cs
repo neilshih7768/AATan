@@ -134,7 +134,6 @@ public class Ball : MonoBehaviour {
 				transform.position = Vector2.MoveTowards(transform.position, mg[0].GetAP(), Time.deltaTime * 10);
 				if(mg[0].GetAP().Equals((Vector2)transform.position)){
 					bs = BallStatus.End;
-					//print(iBallID + " End;");
 					mg[0].AddHoldBall();
 				}
 			}
@@ -195,9 +194,7 @@ public class Ball : MonoBehaviour {
 				Vector2 vAP = new Vector2(this.transform.position.x, -3.8F);
 				mg[0].SetAP(vAP);	// Set assemble point
 				mg[0].AddRounds();
-				//mg[0].NewBall().SetBallID( mg[0].GetRounds() );
 				mg[0].SetAssemble();
-				print ("Set AP");
 			}
 
 			if(BallStatus.Shoot == bs) {
@@ -228,14 +225,7 @@ public class Ball : MonoBehaviour {
 		bs = BallStatus.Shoot;
 
 		mg[0].SubHoldBall();
-		/*if(iBallID == 1)
-			print("===================");
-		print (((iBallID-1)*0.05F) + "\t" + (Time.time - mg[0].fTime));*/
-
 		mg[0].fTime = Time.time;
-
-		//if(mg[0].IsAssemble())
-		//	mg[0].SetNotAssemble();
 	}
 
 }
