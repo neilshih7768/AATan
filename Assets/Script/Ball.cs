@@ -37,7 +37,6 @@ public class Ball : MonoBehaviour {
 
 	int iBallID;	// first ball is 1
 
-	float fLastTime;
 
 	// Use this for initialization
 	void Start () {
@@ -54,8 +53,6 @@ public class Ball : MonoBehaviour {
 		speed = gc.GetSpeed();
 
 		bs = BallStatus.Wait;
-
-		fLastTime = Time.time;
 	}
 
 

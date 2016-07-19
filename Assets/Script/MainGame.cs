@@ -91,7 +91,7 @@ public class MainGame : MonoBehaviour {
 				Vector2 vPointBoxQueue = new Vector2(j * 0.8F - 2.4F, i * -0.8F + 3.5F); // Set position
 				GameObject goCube = (GameObject)Instantiate(cube, vPointBoxQueue, Quaternion.identity);
 				Cube cCube = goCube.GetComponent<Cube>();
-				cCube.SetHP(3);
+				cCube.SetHP(30);
 				cCube.SetID(j + i * 7);
 				cCube.SetLocation(vPointBoxQueue);
 			}
@@ -120,7 +120,6 @@ public class MainGame : MonoBehaviour {
 		GUI.skin = customSkin;
 		GUI.Label(new Rect(Screen.width/2, 20, 200, 60 ), "Scores:" + iScore.ToString() );
 		GUI.Label(new Rect(20, 20, 250, 60 ), "Rounds:" + iRounds.ToString() );
-		GUI.Label(new Rect(20, Screen.height-80, 400, 100 ), "AP:" + vAssemblePoint.ToString() );
 		GUI.Label(new Rect(Screen.width/2, Screen.height-60, 400, 100 ), "X " + iHoldBalls.ToString() );
 	}
 

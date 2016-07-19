@@ -6,7 +6,7 @@
 
 	public GameConfig(){
 		iSpeed = 15;
-		iInitBalls = 15;
+		iInitBalls = 50;
 		fShootWait = 0.05F;
 	}
 
