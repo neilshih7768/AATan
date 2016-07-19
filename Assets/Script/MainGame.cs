@@ -10,6 +10,8 @@ public class MainGame : MonoBehaviour {
 	public GameObject wall;
 	public GameObject bar;
 
+	public GameObject pikachu;
+
 	public GUISkin customSkin;
 
 	GameConfig gc = new GameConfig();
@@ -17,7 +19,12 @@ public class MainGame : MonoBehaviour {
 	int iScore;
 	int iRounds;
 	int iHoldBalls;
+
+	GameObject goTopBar;
+	GameObject goButtonBar;
 	GameObject goFirstBall;
+	GameObject goPikachu;
+
 	Ball bFirstBall;
 	List<Ball> bBallList = new List<Ball>();
 
@@ -44,6 +51,9 @@ public class MainGame : MonoBehaviour {
 		{
 			Application.LoadLevel(0);
 		}
+
+		Vector2 v = vAssemblePoint + new Vector2(0.69F, 0);
+		goPikachu.transform.position = Vector2.MoveTowards(goPikachu.transform.position, v, Time.deltaTime * 10);
 	}
 
 
@@ -52,6 +62,7 @@ public class MainGame : MonoBehaviour {
 		SetCubes();
 		SetWall ();
 		SetBar	();
+		SetPikachu();
 
 		for(int i = 1; i <= gc.GetInitBalls(); i++)
 			NewBall().SetBallID(i);
@@ -73,7 +84,6 @@ public class MainGame : MonoBehaviour {
 
 
 	void SetBall() {	// First ball
-
 		vAssemblePoint = new Vector2(0, -3.8F); // Set position
 		goFirstBall = (GameObject)Instantiate(ball, vAssemblePoint, Quaternion.identity);
 		bFirstBall = goFirstBall.GetComponent<Ball>();
@@ -108,11 +118,20 @@ public class MainGame : MonoBehaviour {
 	void SetBar() {
 		// Up Bar
 		Vector2 vPointTopBar = new Vector2(0F, 4.0F); // Set position
-		GameObject goTopBar = (GameObject)Instantiate(bar, vPointTopBar, Quaternion.identity);
+		goTopBar = (GameObject)Instantiate(bar, vPointTopBar, Quaternion.identity);
 
 		// Button Bar
 		Vector2 vPointButtonBar = new Vector2(0F, -4.0F); // Set position
-		GameObject goButtonBar = (GameObject)Instantiate(bar, vPointButtonBar, Quaternion.identity);
+		goButtonBar = (GameObject)Instantiate(bar, vPointButtonBar, Quaternion.identity);
+		goButtonBar.layer = LayerMask.NameToLayer("Bar");
+
+	}
+
+
+	void SetPikachu() {
+		Vector2 v = new Vector2(0.69F, -3.8F); // Set position
+		goPikachu = (GameObject)Instantiate(pikachu, v, Quaternion.identity);
+		goPikachu.layer = LayerMask.NameToLayer("Pikachu");
 	}
 
 
