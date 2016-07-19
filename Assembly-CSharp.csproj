@@ -47,6 +47,7 @@
   <ItemGroup>
      <Compile Include="Assets\Script\Ball.cs" />
      <Compile Include="Assets\Script\Cube.cs" />
+     <Compile Include="Assets\Script\GameConfig.cs" />
      <Compile Include="Assets\Script\MainGame.cs" />
      <Compile Include="Assets\Script\TestBall.cs" />
      <Compile Include="Assets\Script\UnitTest.cs" />

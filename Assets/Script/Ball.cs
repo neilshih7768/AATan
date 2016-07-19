@@ -15,6 +15,8 @@ enum BallStatus{
 public class Ball : MonoBehaviour {
 	MainGame[] mg;
 
+	GameConfig gc = new GameConfig();
+
 	BallStatus bs;
 
 	public Transform[] children;
@@ -31,7 +33,6 @@ public class Ball : MonoBehaviour {
 	Vector2 startP, EndP;
 
 	float Slope;
-	bool bMouseDown = false;
 	float fShootPower;
 
 	int iBallID;	// first ball is 1
@@ -50,7 +51,7 @@ public class Ball : MonoBehaviour {
 		renderers = rbBall.GetComponentsInChildren<Renderer>();
 		renderers[1].enabled = false;
 
-		speed = 15;
+		speed = gc.GetSpeed();
 
 		bs = BallStatus.Wait;
 
@@ -60,122 +61,87 @@ public class Ball : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		fZRotDeg = rbBall.transform.eulerAngles.z;
+		if(iBallID != 0){
+			fZRotDeg = rbBall.transform.eulerAngles.z;
 
-		if (fZRotDeg > 180)
-		{
-			fZRotDeg = 360 - fZRotDeg;
-			fZRotAng = fZRotDeg / 180 * 3.14159f;
-		}
-		else
-		{
-			fZRotDeg *= -1;
-			fZRotAng = fZRotDeg / 180 * 3.14159f;
-		}
-
-		EndP = Input.mousePosition;
-
-		#if MOBILE
-		// **************** TouchPad methods ****************
-		if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
-		{
-			bMouseDown = true;
-			renderers[1].enabled = true;
-
-			rbBall.MoveRotation(30);		// Set direct up
-
-			startP = Input.mousePosition;
-
-			Debugtext.text = "Touch";
-		}
-
-		if(Input.GetTouch(0).phase == TouchPhase.Canceled)
-		{
-			bMouseDown = false;
-			renderers[1].enabled = false;
-
-			vShoot = new Vector2(Mathf.Sin(fZRotAng) * 30, Mathf.Cos(fZRotAng) * 30);
-			rbBall.AddForce(vShoot * speed);
-
-			Debugtext.text = "Release";
-		}
-		// **************** TouchPad methods End ****************
-		#endif
-
-		// ***************** Mouse Methods *****************
-
-
-		if (Input.GetMouseButtonDown(1))
-		{
-			
-		}
-
-		if(mg[0].IsReady()){
-
-			if (Input.GetMouseButtonDown(0))	// Click mouse left button 
+			if (fZRotDeg > 180)
 			{
-				bMouseDown = true;
-
-				if(1 == iBallID)
-					renderers[1].enabled = true;// Show shotting bar
-
-				rbBall.MoveRotation(30);
-
-				startP = Input.mousePosition;
+				fZRotDeg = 360 - fZRotDeg;
+				fZRotAng = fZRotDeg / 180 * 3.14159f;
+			}
+			else
+			{
+				fZRotDeg *= -1;
+				fZRotAng = fZRotDeg / 180 * 3.14159f;
 			}
 
-			if (Input.GetMouseButtonUp(0))		// Release mouse left button
-			{
-				mg[0].fTime = Time.time;
-				bMouseDown = false;
-				renderers[1].enabled = false;	// Hide shooting bar
+			EndP = Input.mousePosition;
 
-				if(fShootPower > 10){
-					if(BallStatus.Wait == bs){
-						StartCoroutine(Shoot());
+
+			if(mg[0].IsReady()){
+
+				if (Input.GetMouseButtonDown(0))	// Click mouse left button 
+				{
+					mg[0].MouseDown();
+
+					if(1 == iBallID)
+						renderers[1].enabled = true;// Show shotting bar
+
+					rbBall.MoveRotation(30);
+
+					startP = Input.mousePosition;
+				}
+
+				if (Input.GetMouseButtonUp(0))		// Release mouse left button
+				{
+					mg[0].fTime = Time.time;
+					mg[0].MouseUp();
+					renderers[1].enabled = false;	// Hide shooting bar
+
+					if(fShootPower > 10){
+						if(BallStatus.Wait == bs){
+							StartCoroutine(Shoot());
+						}
 					}
 				}
+
+				if(BallStatus.End == bs)
+				{
+					bs = BallStatus.Wait;
+				}
 			}
-		}
 
-		if(bMouseDown)		// Draw shoot bar
-		{
-			const float fMinShootPower = 6;
-			const float fMaxShootPower = 30;
+			if(mg[0].IsMouseDown())		// Draw shoot bar
+			{
+				const float fMinShootPower = 6;
+				const float fMaxShootPower = 30;
 
-			float fDistance = Vector2.Distance(startP, EndP);
-			fShootPower = fDistance * 0.1F;
+				float fDistance = Vector2.Distance(startP, EndP);
+				fShootPower = fDistance * 0.1F;
 
-			if(fShootPower < fMinShootPower)
-				children[1].localScale = new Vector3(10, fMinShootPower, 10);
-			else if(fShootPower > fMaxShootPower)
-				children[1].localScale = new Vector3(10, fMaxShootPower, 10);
-			else
-				children[1].localScale = new Vector3(10, fShootPower, 10);
+				if(fShootPower < fMinShootPower)
+					children[1].localScale = new Vector3(10, fMinShootPower, 10);
+				else if(fShootPower > fMaxShootPower)
+					children[1].localScale = new Vector3(10, fMaxShootPower, 10);
+				else
+					children[1].localScale = new Vector3(10, fShootPower, 10);
 
-			rbBall.MoveRotation((EndP.x - startP.x) * 0.3F);
-		}
-
-		if(BallStatus.Assemble == bs)
-		{
-			transform.position = Vector2.MoveTowards(transform.position, mg[0].GetAP(), Time.deltaTime * 10);
-			if(mg[0].GetAP().Equals((Vector2)transform.position)){
-				bs = BallStatus.End;
-				//print(iBallID + " End;");
-				mg[0].AddHoldBall();
+				rbBall.MoveRotation((EndP.x - startP.x) * 0.3F);
 			}
-		}
 
-		if(BallStatus.End == bs)
-		{
-			transform.position = mg[0].GetAP();
-		}
+			if(BallStatus.Assemble == bs)
+			{
+				transform.position = Vector2.MoveTowards(transform.position, mg[0].GetAP(), Time.deltaTime * 10);
+				if(mg[0].GetAP().Equals((Vector2)transform.position)){
+					bs = BallStatus.End;
+					//print(iBallID + " End;");
+					mg[0].AddHoldBall();
+				}
+			}
 
-		if(mg[0].IsReady())
-		{
 			if(BallStatus.End == bs)
 			{
-				bs = BallStatus.Wait;
+				transform.position = mg[0].GetAP();
 			}
 		}
 	}
@@ -226,10 +192,12 @@ public class Ball : MonoBehaviour {
 			rbBall.angularVelocity = 0;
 
 			if(false == mg[0].IsAssemble()) {
-				mg[0].SetAP(this.transform.position);	// Set assemble point
+				Vector2 vAP = new Vector2(this.transform.position.x, -3.8F);
+				mg[0].SetAP(vAP);	// Set assemble point
 				mg[0].AddRounds();
 				//mg[0].NewBall().SetBallID( mg[0].GetRounds() );
 				mg[0].SetAssemble();
+				print ("Set AP");
 			}
 
 			if(BallStatus.Shoot == bs) {
@@ -254,17 +222,20 @@ public class Ball : MonoBehaviour {
 	}
 
 	IEnumerator Shoot() {
-		yield return new WaitForSeconds((iBallID-1)*0.05F);
+		yield return new WaitForSeconds((iBallID-1) * gc.GetShootWait());
 		vShoot = new Vector2(Mathf.Sin(fZRotAng) * 30, Mathf.Cos(fZRotAng) * 30);
 		rbBall.AddForce(vShoot * speed);
 		bs = BallStatus.Shoot;
-		mg[0].SetNotAssemble();
+
 		mg[0].SubHoldBall();
 		/*if(iBallID == 1)
 			print("===================");
 		print (((iBallID-1)*0.05F) + "\t" + (Time.time - mg[0].fTime));*/
 
 		mg[0].fTime = Time.time;
+
+		//if(mg[0].IsAssemble())
+		//	mg[0].SetNotAssemble();
 	}
 
 }

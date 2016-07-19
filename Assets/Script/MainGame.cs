@@ -12,6 +12,8 @@ public class MainGame : MonoBehaviour {
 
 	public GUISkin customSkin;
 
+	GameConfig gc = new GameConfig();
+
 	int iScore;
 	int iRounds;
 	int iHoldBalls;
@@ -21,6 +23,7 @@ public class MainGame : MonoBehaviour {
 
 	Vector2 vAssemblePoint;
 	bool bAssemble;		// Is assembling ?
+	bool bMouseDown;
 
 	public float fTime;
 
@@ -30,6 +33,7 @@ public class MainGame : MonoBehaviour {
 		iScore = 0;
 		iRounds = 1;
 		bAssemble = false;
+		bMouseDown = false;
 		SetAll();
 	}
 
@@ -49,7 +53,7 @@ public class MainGame : MonoBehaviour {
 		SetWall ();
 		SetBar	();
 
-		for(int i = 2; i <= 15; i++)
+		for(int i = 1; i <= gc.GetInitBalls(); i++)
 			NewBall().SetBallID(i);
 	}
 
@@ -69,10 +73,10 @@ public class MainGame : MonoBehaviour {
 
 
 	void SetBall() {	// First ball
-		vAssemblePoint = new Vector2(0, -3.5F); // Set position
+		vAssemblePoint = new Vector2(0, -3.8F); // Set position
 		goFirstBall = (GameObject)Instantiate(ball, vAssemblePoint, Quaternion.identity);
 		bFirstBall = goFirstBall.GetComponent<Ball>();
-		bFirstBall.SetBallID(1);
+		bFirstBall.SetBallID(0);
 		bBallList.Add(bFirstBall);
 		iHoldBalls++;
 	}
@@ -119,6 +123,7 @@ public class MainGame : MonoBehaviour {
 		//GUI.Label(new Rect(vAssemblePoint.x+5, vAssemblePoint.y, 250, 60 ), "X" + iRounds.ToString() );
 		GUI.Label(new Rect(20, Screen.height-80, 400, 100 ), "AP:" + vAssemblePoint.ToString() );
 		GUI.Label(new Rect(Screen.width/2, Screen.height-60, 400, 100 ), "X " + iHoldBalls.ToString() );
+		GUI.Label(new Rect(Screen.width/2+100, Screen.height-60, 400, 100  ), "As:" + IsAssemble() );
 	}
 
 
@@ -139,8 +144,10 @@ public class MainGame : MonoBehaviour {
 	public void SetNotAssemble() { bAssemble = false; }
 
 	public bool IsReady() { 
-		if( bBallList.Count == iHoldBalls)
+		if( bBallList.Count == iHoldBalls) {
+			bAssemble = false;
 			return true; 
+		}
 		else
 			return false;
 	}
@@ -148,5 +155,11 @@ public class MainGame : MonoBehaviour {
 	public void AddHoldBall() { iHoldBalls++; }
 
 	public void SubHoldBall() { iHoldBalls--; }
+
+	public void MouseDown() { bMouseDown = true; }
+
+	public void MouseUp() { bMouseDown = false; }
+
+	public bool IsMouseDown(){ return bMouseDown; }
 
 }
