@@ -8,7 +8,8 @@ using System;
 enum BallStatus{
 	Wait,
 	Shoot,
-	Assemble
+	Assemble,
+	End
 }
 
 public class Ball : MonoBehaviour {
@@ -35,6 +36,8 @@ public class Ball : MonoBehaviour {
 
 	int iBallID;	// first ball is 1
 
+	float fLastTime;
+
 	// Use this for initialization
 	void Start () {
 		GameObject go = GameObject.Find("Main Game");
@@ -50,6 +53,8 @@ public class Ball : MonoBehaviour {
 		speed = 15;
 
 		bs = BallStatus.Wait;
+
+		fLastTime = Time.time;
 	}
 
 
@@ -121,6 +126,7 @@ public class Ball : MonoBehaviour {
 
 			if (Input.GetMouseButtonUp(0))		// Release mouse left button
 			{
+				mg[0].fTime = Time.time;
 				bMouseDown = false;
 				renderers[1].enabled = false;	// Hide shooting bar
 
@@ -154,14 +160,23 @@ public class Ball : MonoBehaviour {
 		{
 			transform.position = Vector2.MoveTowards(transform.position, mg[0].GetAP(), Time.deltaTime * 10);
 			if(mg[0].GetAP().Equals((Vector2)transform.position)){
-				bs = BallStatus.Wait;
+				bs = BallStatus.End;
+				//print(iBallID + " End;");
 				mg[0].AddHoldBall();
 			}
 		}
 
-		if(BallStatus.Wait == bs)
+		if(BallStatus.End == bs)
 		{
 			transform.position = mg[0].GetAP();
+		}
+
+		if(mg[0].IsReady())
+		{
+			if(BallStatus.End == bs)
+			{
+				bs = BallStatus.Wait;
+			}
 		}
 	}
 
@@ -245,6 +260,11 @@ public class Ball : MonoBehaviour {
 		bs = BallStatus.Shoot;
 		mg[0].SetNotAssemble();
 		mg[0].SubHoldBall();
+		/*if(iBallID == 1)
+			print("===================");
+		print (((iBallID-1)*0.05F) + "\t" + (Time.time - mg[0].fTime));*/
+
+		mg[0].fTime = Time.time;
 	}
 
 }

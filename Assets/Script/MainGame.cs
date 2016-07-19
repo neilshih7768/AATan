@@ -22,6 +22,8 @@ public class MainGame : MonoBehaviour {
 	Vector2 vAssemblePoint;
 	bool bAssemble;		// Is assembling ?
 
+	public float fTime;
+
 	// Use this for initialization
 	void Start () {
 		iHoldBalls = 0;
@@ -47,7 +49,7 @@ public class MainGame : MonoBehaviour {
 		SetWall ();
 		SetBar	();
 
-		for(int i = 2; i <= 5; i++)
+		for(int i = 2; i <= 15; i++)
 			NewBall().SetBallID(i);
 	}
 
@@ -146,4 +148,5 @@ public class MainGame : MonoBehaviour {
 	public void AddHoldBall() { iHoldBalls++; }
 
 	public void SubHoldBall() { iHoldBalls--; }
+
 }
