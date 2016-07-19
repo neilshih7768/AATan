@@ -52,7 +52,7 @@ public class MainGame : MonoBehaviour {
 			Application.LoadLevel(0);
 		}
 
-		Vector2 v = vAssemblePoint + new Vector2(0.69F, 0);
+		Vector2 v = vAssemblePoint + new Vector2(0.6F, -0.2F);
 		goPikachu.transform.position = Vector2.MoveTowards(goPikachu.transform.position, v, Time.deltaTime * 10);
 	}
 
@@ -123,15 +123,14 @@ public class MainGame : MonoBehaviour {
 		// Button Bar
 		Vector2 vPointButtonBar = new Vector2(0F, -4.0F); // Set position
 		goButtonBar = (GameObject)Instantiate(bar, vPointButtonBar, Quaternion.identity);
-		goButtonBar.layer = LayerMask.NameToLayer("Bar");
-
+		goButtonBar.GetComponent<SpriteRenderer>().sortingLayerName = "Bar";
 	}
 
 
 	void SetPikachu() {
-		Vector2 v = new Vector2(0.69F, -3.8F); // Set position
+		Vector2 v = new Vector2(0.6F, -4F); // Set position
 		goPikachu = (GameObject)Instantiate(pikachu, v, Quaternion.identity);
-		goPikachu.layer = LayerMask.NameToLayer("Pikachu");
+		goPikachu.GetComponent<SpriteRenderer>().sortingLayerName = "Pikachu";
 	}
 
 
